@@ -1,4 +1,3 @@
-```markdown
 <p align="center">
   <img src="assets/image.png" alt="Project Banner" width="800">
 </p>
