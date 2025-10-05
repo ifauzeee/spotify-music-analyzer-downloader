@@ -1,7 +1,7 @@
 # .gitignore
 .env
 __pycache__/
-.cache/
+.cache
 venv/
 downloads/
 outputs/
