@@ -12,17 +12,16 @@
         <span id="progress-text" class="progress-text">0%</span>
     </div>
 
-    <div id="result-container" style="display: none; margin-top: 2rem;">
+    <div id="result-container" class="results-section" style="display: none; margin-top: 2rem; text-align: left;">
         <h2 id="result-title"></h2>
-        <a href="" id="result-link" class="button"></a>
+        <div id="download-queue"></div>
     </div>
 
     <p id="error-message" style="color: #ff4d4d; display: none;"></p>
 </div>
 
 <script>
-    const loadingContainer = document.getElementById('loading-container');
-    const taskId = loadingContainer.dataset.taskId;
+    const taskId = document.getElementById('loading-container').dataset.taskId;
 
     const progressBar = document.getElementById('progress-bar');
     const progressText = document.getElementById('progress-text');
@@ -30,7 +29,7 @@
     const errorMessage = document.getElementById('error-message');
     const resultContainer = document.getElementById('result-container');
     const resultTitle = document.getElementById('result-title');
-    const resultLink = document.getElementById('result-link');
+    const downloadQueue = document.getElementById('download-queue');
 
     function checkStatus() {
         if (!taskId) {
@@ -41,27 +40,43 @@
 
         fetch(`/status/${taskId}`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Server returned status ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`Server returned status ${response.status}`);
                 return response.json();
             })
             .then(data => {
-                progressBar.style.width = (data.progress || 0) + '%';
-                progressText.textContent = (data.progress || 0) + '%';
                 loadingMessage.textContent = data.message || 'Processing...';
+                
+                const result = data.result;
+
+                if (result && result.type === 'download_queue') {
+                    // Update UI untuk antrean download
+                    resultContainer.style.display = 'block';
+                    resultTitle.textContent = 'Download Queue';
+                    
+                    let tableHTML = '<table><thead><tr><th>#</th><th>Track</th><th>Status</th></tr></thead><tbody>';
+                    result.tracks.forEach((track, index) => {
+                        tableHTML += `<tr><td>${index + 1}</td><td>${track.name}</td><td>${track.status}</td></tr>`;
+                    });
+                    tableHTML += '</tbody></table>';
+                    downloadQueue.innerHTML = tableHTML;
+                    
+                    const completed = result.tracks.filter(t => t.status === 'Selesai').length;
+                    const total = result.tracks.length;
+                    const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+                    progressBar.style.width = progress + '%';
+                    progressText.textContent = progress + '%';
+
+                } else {
+                    // Update UI untuk progress bar biasa
+                    progressBar.style.width = (data.progress || 0) + '%';
+                    progressText.textContent = (data.progress || 0) + '%';
+                }
 
                 if (data.status === 'complete') {
-                    const result = data.result;
                     if (result && result.type === 'analysis') {
                         window.location.href = `/results/${taskId}`;
-                    } else if (result && result.type === 'download') {
-                        loadingMessage.textContent = 'Download Selesai!';
-                        resultTitle.textContent = 'File Anda Siap!';
-                        resultLink.href = `/download_file/${result.filename}`;
-                        resultLink.textContent = `Download ${result.filename}`;
-                        resultLink.setAttribute('download', ''); // Memicu download
-                        resultContainer.style.display = 'block';
+                    } else if (result && result.type === 'download_queue') {
+                        loadingMessage.textContent = 'Semua Download Selesai!';
                     }
                 } else if (data.status === 'failed') {
                     errorMessage.textContent = 'Terjadi kesalahan: ' + data.message;

@@ -55,20 +55,23 @@ def find_different_versions(df):
 
 def generate_statistics(df):
     df_copy = df.dropna(subset=['artists_list']).copy()
-    
     all_artists = [artist for sublist in df_copy['artists_list'] for artist in sublist]
     top_artists = pd.Series(Counter(all_artists)).sort_values(ascending=False).head(5)
-    
     df_copy['release_year'] = pd.to_datetime(df_copy['release_date'], errors='coerce').dt.year
     top_years = df_copy['release_year'].value_counts().dropna().astype(int).head(5)
-    
     unique_artists = len(set(all_artists))
-
     return {
         "top_artists": top_artists, "top_years": top_years,
         "total_duration_hrs": df_copy['duration_ms'].sum() / 3600000,
         "total_tracks": len(df_copy), "unique_artists": unique_artists
     }
+
+def generate_taste_profile(df):
+    features = ['danceability', 'energy', 'valence', 'acousticness', 'instrumentalness', 'liveness', 'speechiness']
+    available = [f for f in features if f in df.columns and pd.api.types.is_numeric_dtype(df[f]) and df[f].notna().any()]
+    if not available:
+        return None
+    return df[available].mean().to_dict()
 
 def analyze_genres(df, artist_genre_map):
     if 'artist_ids' not in df.columns: return []

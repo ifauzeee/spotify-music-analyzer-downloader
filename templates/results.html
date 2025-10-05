@@ -5,26 +5,42 @@
     <h1>Analysis Results</h1>
 
     <div class="results-section">
-        <h2>General Stats</h2>
-        <table>
-            <tbody>
-                <tr><td>Total Tracks:</td><td><strong>{{ stats.total_tracks }}</strong></td></tr>
-                <tr><td>Unique Artists:</td><td><strong>{{ stats.unique_artists }}</strong></td></tr>
-                <tr><td>Total Duration:</td><td><strong>{{ "%.2f"|format(stats.total_duration_hrs) }} hours</strong></td></tr>
-            </tbody>
-        </table>
+        <h2>General Stats & Top Artists</h2>
+        <div class="stats-container">
+            <table>
+                <tbody>
+                    <tr><td>Total Tracks:</td><td><strong>{{ stats.total_tracks }}</strong></td></tr>
+                    <tr><td>Unique Artists:</td><td><strong>{{ stats.unique_artists }}</strong></td></tr>
+                    <tr><td>Total Duration:</td><td><strong>{{ "%.2f"|format(stats.total_duration_hrs) }} hours</strong></td></tr>
+                </tbody>
+            </table>
+            <table>
+                <thead>
+                    <tr><th>Top Artists</th><th>Count</th></tr>
+                </thead>
+                <tbody>
+                    {% for artist, count in stats.top_artists.items() %}
+                    <tr><td>{{ artist }}</td><td><strong>{{ count }}</strong></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-
+    
     <div class="results-section">
-        <h2>Top Artists</h2>
+        <h2>Taste Profile (Audio Features)</h2>
         <table>
-            <thead>
-                <tr><th>Artist</th><th>Count</th></tr>
+             <thead>
+                <tr><th>Feature</th><th>Average Value</th></tr>
             </thead>
             <tbody>
-                {% for artist, count in stats.top_artists.items() %}
-                <tr><td>{{ artist }}</td><td><strong>{{ count }}</strong></td></tr>
-                {% endfor %}
+                {% if profile %}
+                    {% for feature, value in profile.items() %}
+                    <tr><td>{{ feature|capitalize }}</td><td><strong>{{ "%.2f"|format(value) }}</strong></td></tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="2">Audio features could not be retrieved.</td></tr>
+                {% endif %}
             </tbody>
         </table>
     </div>

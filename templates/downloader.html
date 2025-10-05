@@ -1,10 +1,14 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+<div class="container">
+    <h1>Spotify Downloader</h1>
+    <p>Enter a Spotify URL (Track, Playlist, or Album) to download. Please be patient, as downloading may take some time.</p>
+    
     <div class="form-section">
-        <h2>Download a Track</h2>
+        <h2>Download Music</h2>
         <form action="{{ url_for('start_download') }}" method="post">
-            <input type="url" name="spotify_url" placeholder="https://open.spotify.com/intl-id/8..." required>
+            <input type="url" name="spotify_url" placeholder="Enter Spotify Track/Playlist/Album URL..." required>
             
             <div class="options-container">
                 <div>
