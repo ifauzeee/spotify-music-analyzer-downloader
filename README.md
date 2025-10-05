@@ -207,7 +207,6 @@ spotify-music-analyzer/
 
 ```
 
----
 
 ## ⚖️ Legal Notice
 
