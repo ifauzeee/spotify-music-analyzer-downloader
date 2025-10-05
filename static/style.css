@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+    --bg-dark: #121212;
+    --surface-1: #181818;
+    --surface-2: #282828;
+    --primary: #1DB954;
+    --primary-hover: #1ed760;
+    --text-primary: #FFFFFF;
+    --text-secondary: #b3b3b3;
+    --border-color: #3f3f3f;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.button {
+    background-color: var(--primary);
+    color: var(--text-primary);
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: var(--primary-hover);
+    transform: scale(1.05);
+}
+
+main {
+    padding: 2.5rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- BAGIAN PENTING UNTUK RATA TENGAH --- */
+.horizontal-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;    /* Ini yang membuat teks menjadi rata tengah */
+    margin-bottom: 4rem;
+}
+.header-icon {
+    font-size: 4rem;
+    margin: 0;
+}
+.header-text h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+}
+.header-text p {
+    color: var(--text-secondary);
+    margin: 0.25rem 0 0 0;
+    max-width: 600px;
+}
+/* --- AKHIR BAGIAN PENTING --- */
+
+.action-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 3rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.action-item {
+    width: 300px;
+    text-align: center;
+}
+.action-item h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+.action-item input[type="url"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-2);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+.action-item .button {
+    width: 100%;
+}
+
+.results-page h1 { text-align: left; margin-bottom: 2rem; }
+.results-section { margin-bottom: 3rem; }
+.results-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 0.75rem 0.25rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+th {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 2rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.progress-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.progress-bar-container {
+    flex-grow: 1;
+    background-color: var(--surface-2);
+    border-radius: 50px;
+    border: 1px solid var(--border-color);
+    padding: 4px;
+}
+.progress-bar {
+    height: 20px;
+    background-color: var(--primary);
+    width: 0%;
+    border-radius: 50px;
+    transition: width 0.5s ease-in-out;
+}
+.progress-text {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.form-section {
+    max-width: 600px;
+    margin: 2rem auto;
+}
+.form-section h2 {
+    margin-top: 0;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.form-section input[type="url"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-2);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+.options-container {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+}
+.options-container select {
+    padding: 0.5rem;
+    background-color: var(--surface-2);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+.form-section .button {
+    width: 100%;
+}

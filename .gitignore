@@ -7,3 +7,7 @@ downloads/
 outputs/
 all_project_code.txt
 cat.py
+spotify_data.db
+*.db
+*.sqlite
+*.sqlite3

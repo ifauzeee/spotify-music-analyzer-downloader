@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container" style="text-align: center; padding-top: 5rem;" id="loading-container" data-task-id="{{ task_id }}">
+    <h1 id="loading-message">Memulai...</h1>
+    <p>Harap tunggu, proses sedang berjalan.</p>
+    
+    <div class="progress-container">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+        </div>
+        <span id="progress-text" class="progress-text">0%</span>
+    </div>
+
+    <div id="result-container" style="display: none; margin-top: 2rem;">
+        <h2 id="result-title"></h2>
+        <a href="" id="result-link" class="button"></a>
+    </div>
+
+    <p id="error-message" style="color: #ff4d4d; display: none;"></p>
+</div>
+
+<script>
+    const loadingContainer = document.getElementById('loading-container');
+    const taskId = loadingContainer.dataset.taskId;
+
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const loadingMessage = document.getElementById('loading-message');
+    const errorMessage = document.getElementById('error-message');
+    const resultContainer = document.getElementById('result-container');
+    const resultTitle = document.getElementById('result-title');
+    const resultLink = document.getElementById('result-link');
+
+    function checkStatus() {
+        if (!taskId) {
+            errorMessage.textContent = 'Error: Task ID tidak ditemukan.';
+            errorMessage.style.display = 'block';
+            return;
+        }
+
+        fetch(`/status/${taskId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Server returned status ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                progressBar.style.width = (data.progress || 0) + '%';
+                progressText.textContent = (data.progress || 0) + '%';
+                loadingMessage.textContent = data.message || 'Processing...';
+
+                if (data.status === 'complete') {
+                    const result = data.result;
+                    if (result && result.type === 'analysis') {
+                        window.location.href = `/results/${taskId}`;
+                    } else if (result && result.type === 'download') {
+                        loadingMessage.textContent = 'Download Selesai!';
+                        resultTitle.textContent = 'File Anda Siap!';
+                        resultLink.href = `/download_file/${result.filename}`;
+                        resultLink.textContent = `Download ${result.filename}`;
+                        resultLink.setAttribute('download', ''); // Memicu download
+                        resultContainer.style.display = 'block';
+                    }
+                } else if (data.status === 'failed') {
+                    errorMessage.textContent = 'Terjadi kesalahan: ' + data.message;
+                    errorMessage.style.display = 'block';
+                } else {
+                    setTimeout(checkStatus, 2000);
+                }
+            })
+            .catch(err => {
+                console.error('Error checking status:', err);
+                errorMessage.textContent = 'Gagal terhubung ke server untuk memeriksa status.';
+                errorMessage.style.display = 'block';
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', checkStatus);
+</script>
+{% endblock %}

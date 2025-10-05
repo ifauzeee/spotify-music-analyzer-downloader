@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    
+    <div class="horizontal-header">
+        <h1 class="header-icon">🎵</h1>
+        <div class="header-text">
+            <h1>Spotify Music Analyzer</h1>
+            <p>Get deep insights into your Spotify liked songs, analyze any playlist, or download a track.</p>
+        </div>
+    </div>
+    
+    <div class="action-container">
+        <div class="action-item">
+            <h2>Analyze Liked Songs</h2>
+            <form action="{{ url_for('start_analysis') }}" method="post">
+                <input type="hidden" name="analysis_type" value="liked_songs">
+                <button type="submit" class="button">Start Analysis</button>
+            </form>
+        </div>
+
+        <div class="action-item">
+            <h2>Analyze a Playlist</h2>
+            <form action="{{ url_for('start_analysis') }}" method="post">
+                <input type="hidden" name="analysis_type" value="playlist">
+                <input type="url" name="playlist_url" placeholder="Enter Spotify playlist URL..." required>
+                <button type="submit" class="button">Analyze Playlist</button>
+            </form>
+        </div>
+        
+        <div class="action-item">
+            <h2>Download a Track</h2>
+            <a href="{{ url_for('downloader') }}" class="button">Go to Downloader</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

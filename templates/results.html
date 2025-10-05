@@ -1,0 +1,87 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container results-page">
+    <h1>Analysis Results</h1>
+
+    <div class="results-section">
+        <h2>General Stats</h2>
+        <table>
+            <tbody>
+                <tr><td>Total Tracks:</td><td><strong>{{ stats.total_tracks }}</strong></td></tr>
+                <tr><td>Unique Artists:</td><td><strong>{{ stats.unique_artists }}</strong></td></tr>
+                <tr><td>Total Duration:</td><td><strong>{{ "%.2f"|format(stats.total_duration_hrs) }} hours</strong></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="results-section">
+        <h2>Top Artists</h2>
+        <table>
+            <thead>
+                <tr><th>Artist</th><th>Count</th></tr>
+            </thead>
+            <tbody>
+                {% for artist, count in stats.top_artists.items() %}
+                <tr><td>{{ artist }}</td><td><strong>{{ count }}</strong></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="results-section">
+        <h2>Top Genres</h2>
+        <table>
+            <thead>
+                <tr><th>Genre</th><th>Count</th></tr>
+            </thead>
+            <tbody>
+                {% for genre, count in genres %}
+                <tr><td>{{ genre|capitalize }}</td><td><strong>{{ count }}</strong></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if duplicates %}
+    <div class="results-section">
+        <h2>Exact Duplicates</h2>
+        <table>
+            <thead>
+                <tr><th>Track</th><th>Artist</th><th>Album</th></tr>
+            </thead>
+            <tbody>
+                {% for track in duplicates %}
+                <tr>
+                    <td>{{ track.name }}</td>
+                    <td>{{ track.artists }}</td>
+                    <td>{{ track.album }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    {% if versions %}
+    <div class="results-section">
+        <h2>Different Versions (Same Song ID)</h2>
+        <table>
+            <thead>
+                <tr><th>Track</th><th>Artist</th><th>Album</th><th>Added On</th></tr>
+            </thead>
+            <tbody>
+                {% for track in versions %}
+                <tr>
+                    <td>{{ track.name }}</td>
+                    <td>{{ track.artists }}</td>
+                    <td>{{ track.album }}</td>
+                    <td>{{ track.added_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
