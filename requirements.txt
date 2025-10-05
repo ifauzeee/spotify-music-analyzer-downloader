@@ -1,0 +1,11 @@
+# requirements.txt
+spotipy
+pandas
+fuzzywuzzy
+python-levenshtein
+rich
+matplotlib
+wordcloud
+python-dotenv
+spotdl
+scikit-learn

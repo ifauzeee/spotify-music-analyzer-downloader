@@ -1,0 +1,9 @@
+# .gitignore
+.env
+__pycache__/
+.cache/
+venv/
+downloads/
+outputs/
+all_project_code.txt
+cat.py
